@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Check, Flame, Pencil } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp, Flame, Pencil } from 'lucide-react';
 import Heatmap from './Heatmap.jsx';
 import { calcStreaks } from '../lib/habits.js';
 import { colorVars } from '../lib/colors.js';
@@ -7,7 +7,7 @@ import { iconBtn, mutedText } from './ui.js';
 
 const accentText = 'text-[color:var(--habit)] dark:text-[color:var(--habit-dark)]';
 
-export default function HabitCard({ habit, doneSet, today, weeks, onToggle, onEdit }) {
+export default function HabitCard({ habit, doneSet, today, weeks, gridHidden, onToggleGrid, onToggle, onEdit }) {
   const [pop, setPop] = useState(false);
   const doneToday = doneSet.has(today);
   const { current, best } = useMemo(() => calcStreaks(doneSet, today), [doneSet, today]);
@@ -49,7 +49,7 @@ export default function HabitCard({ habit, doneSet, today, weeks, onToggle, onEd
         className={`mt-4 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-base font-semibold transition active:scale-[0.98] ${
           doneToday
             ? 'border border-slate-200 bg-slate-50 text-zinc-600 dark:border-zinc-600 dark:bg-zinc-700/40 dark:text-zinc-300'
-            : 'bg-[var(--habit)] text-white shadow-sm hover:brightness-110 dark:bg-[var(--habit-dark)] dark:text-[color:var(--habit-fg-dark)]'
+            : 'bg-[var(--habit)] text-[color:var(--habit-fg)] shadow-sm hover:brightness-110 dark:bg-[var(--habit-dark)] dark:text-[color:var(--habit-fg-dark)]'
         } ${pop ? 'animate-pop' : ''}`}
       >
         {doneToday ? (
@@ -62,13 +62,35 @@ export default function HabitCard({ habit, doneSet, today, weeks, onToggle, onEd
         )}
       </button>
 
-      <div className="mt-5">
-        <Heatmap doneSet={doneSet} today={today} weeks={weeks} onToggle={(date) => onToggle(habit.id, date)} />
-      </div>
+      {!gridHidden && (
+        <div className="mt-5">
+          <Heatmap doneSet={doneSet} today={today} weeks={weeks} onToggle={(date) => onToggle(habit.id, date)} />
+        </div>
+      )}
 
-      <p className={`mt-1 text-xs ${mutedText}`}>
-        Best streak {best} · {doneSet.size} day{doneSet.size === 1 ? '' : 's'} completed
-      </p>
+      <div className={`flex items-center justify-between gap-2 ${gridHidden ? 'mt-3' : 'mt-1'}`}>
+        <p className={`text-xs ${mutedText}`}>
+          Best streak {best} · {doneSet.size} day{doneSet.size === 1 ? '' : 's'} completed
+        </p>
+        <button
+          type="button"
+          onClick={() => onToggleGrid(habit.id)}
+          aria-expanded={!gridHidden}
+          className="inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-700/60 dark:hover:text-zinc-100"
+        >
+          {gridHidden ? (
+            <>
+              <ChevronDown className="h-3.5 w-3.5" />
+              Show grid
+            </>
+          ) : (
+            <>
+              <ChevronUp className="h-3.5 w-3.5" />
+              Hide grid
+            </>
+          )}
+        </button>
+      </div>
     </article>
   );
 }

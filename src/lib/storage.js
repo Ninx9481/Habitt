@@ -5,7 +5,16 @@ const DATA_KEY = 'habitgrid:data:v2';
 const SETTINGS_KEY = 'habitgrid:settings:v1';
 
 export const WEEK_OPTIONS = [12, 26, 52];
-export const DEFAULT_SETTINGS = { weeks: 26, syncUrl: '', token: '', lastPush: 0 };
+// hiddenGrids: { [habitId]: true } - which habits have their heatmap collapsed (per device, not synced)
+export const DEFAULT_SETTINGS = { weeks: 26, syncUrl: '', token: '', lastPush: 0, hiddenGrids: {} };
+
+function sanitizeHidden(x) {
+  const out = {};
+  if (x && typeof x === 'object') {
+    for (const [k, v] of Object.entries(x)) if (v === true && typeof k === 'string') out[k] = true;
+  }
+  return out;
+}
 
 export function loadData() {
   let raw = null;
@@ -46,6 +55,7 @@ export function loadSettings() {
       syncUrl: typeof s.syncUrl === 'string' ? s.syncUrl : '',
       token: typeof s.token === 'string' ? s.token : '',
       lastPush: Number.isFinite(s.lastPush) ? s.lastPush : 0,
+      hiddenGrids: sanitizeHidden(s.hiddenGrids),
     };
   } catch {
     return { ...DEFAULT_SETTINGS };

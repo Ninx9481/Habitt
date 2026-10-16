@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
-import { Cloud, Copy, Download, RefreshCw, Upload } from 'lucide-react';
+import { Cloud, Copy, Download, Eye, EyeOff, RefreshCw, Upload } from 'lucide-react';
 import Modal from './Modal.jsx';
+import ThemeToggle from './ThemeToggle.jsx';
 import { WEEK_OPTIONS } from '../lib/storage.js';
 import { decodeSetup, encodeSetup, isValidScriptUrl } from '../lib/sync.js';
 import { formatTime, todayStr } from '../lib/dates.js';
@@ -20,6 +21,9 @@ export default function SettingsModal({
   settings,
   sync,
   configured,
+  theme,
+  onTheme,
+  onGridsAll,
   onWeeks,
   onConnect,
   onDisconnect,
@@ -99,7 +103,11 @@ export default function SettingsModal({
   return (
     <Modal title="Settings" onClose={onClose}>
       <div className="space-y-5">
-        <Section title="Grid range" hint="How many weeks each heatmap shows.">
+        <Section title="Appearance" hint="System follows your phone or computer's light / dark setting.">
+          <ThemeToggle theme={theme} onChange={onTheme} />
+        </Section>
+
+        <Section title="Heatmap grid" hint="How many weeks each grid shows, and whether the grids are visible.">
           <div className="inline-flex rounded-lg border border-slate-200 p-0.5 dark:border-zinc-700" role="group">
             {WEEK_OPTIONS.map((w) => (
               <button
@@ -116,6 +124,16 @@ export default function SettingsModal({
                 {w === 52 ? '1 year' : `${w} weeks`}
               </button>
             ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" className={btnSecondary} onClick={() => onGridsAll(false)}>
+              <Eye className="h-4 w-4" />
+              Show all grids
+            </button>
+            <button type="button" className={btnSecondary} onClick={() => onGridsAll(true)}>
+              <EyeOff className="h-4 w-4" />
+              Hide all grids
+            </button>
           </div>
         </Section>
 

@@ -5,8 +5,10 @@ React (Vite) + Tailwind CSS v4 + Lucide Icons · เก็บข้อมูล�
 
 ## ฟีเจอร์
 
-- Light / Dark ตามระบบ (`prefers-color-scheme`) + ปุ่มสลับ System / Light / Dark มุมขวาบน จำค่าที่เลือกไว้ และไม่กระพริบตอนเปิดหน้า
-- การ์ดต่อ 1 habit: ชื่อ + สี, current streak, ปุ่ม **Check in today** ตัวใหญ่, heatmap 12 สัปดาห์ / 26 สัปดาห์ / 1 ปี (ตั้งได้ใน Settings)
+- Light / Dark ตามระบบ (`prefers-color-scheme`) และเลือกเองได้ใน Settings → Appearance (System / Light / Dark) จำค่าที่เลือกไว้ และไม่กระพริบตอนเปิดหน้า
+- ล็อกการซูม (pinch / double-tap) เพื่อให้ใช้งานเหมือนแอพ
+- การ์ดต่อ 1 habit: ชื่อ + สี (เลือกได้ 18 สี), current streak, ปุ่ม **Check in today** ตัวใหญ่, heatmap 12 สัปดาห์ / 26 สัปดาห์ / 1 ปี (ตั้งได้ใน Settings)
+- ปุ่ม **Hide grid / Show grid** ที่ท้ายการ์ดแต่ละใบ และ Hide all / Show all ใน Settings (จำค่าไว้ในแต่ละเครื่อง ไม่ซิงค์)
 - Heatmap: ช่องที่ไม่ได้ทำเป็นสีเทา ช่องที่ทำแล้วเป็นสีของ habit, hover หรือแตะเพื่อดูวันที่และสถานะ (Completed / Not completed)
   แตะช่องย้อนหลังแล้วกด **Mark as done / Undo** เพื่อบันทึกย้อนหลังวันที่ลืมได้
 - เพิ่ม / แก้ไข (ชื่อ, สี) / ลบ habit (ลบแบบยืนยัน 2 ขั้น)

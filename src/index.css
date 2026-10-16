@@ -7,6 +7,12 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Lock zoom: no pinch-zoom, no double-tap zoom. Scrolling (incl. the horizontal heatmap) still works. */
+html,
+body {
+  touch-action: pan-x pan-y;
+}
+
 button {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;

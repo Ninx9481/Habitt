@@ -7,7 +7,6 @@ import { formatLong } from './lib/dates.js';
 import HabitCard from './components/HabitCard.jsx';
 import HabitModal from './components/HabitModal.jsx';
 import SettingsModal from './components/SettingsModal.jsx';
-import ThemeToggle from './components/ThemeToggle.jsx';
 import { iconBtn, mutedText } from './components/ui.js';
 
 const EMPTY = new Set();
@@ -19,7 +18,7 @@ export default function App() {
   const [editing, setEditing] = useState(null); // null | 'new' | habit
   const [showSettings, setShowSettings] = useState(false);
 
-  const { habits, doneSets, settings, sync, configured } = store;
+  const { habits, doneSets, settings, sync, configured, updateSettings } = store;
   const doneCount = habits.filter((h) => doneSets.get(h.id)?.has(today)).length;
 
   const closeEditor = useCallback(() => setEditing(null), []);
@@ -35,6 +34,16 @@ export default function App() {
     store.deleteHabit(editing.id);
     setEditing(null);
   };
+
+  // Grid visibility is a per-device preference (stored in settings, not synced)
+  const toggleGrid = (id) => {
+    const next = { ...settings.hiddenGrids };
+    if (next[id]) delete next[id];
+    else next[id] = true;
+    updateSettings({ hiddenGrids: next });
+  };
+  const setAllGrids = (hide) =>
+    updateSettings({ hiddenGrids: hide ? Object.fromEntries(habits.map((h) => [h.id, true])) : {} });
 
   const SyncIcon = sync.status === 'syncing' ? RefreshCw : sync.status === 'error' ? CloudOff : Cloud;
   const syncTitle =
@@ -60,7 +69,6 @@ export default function App() {
           <button type="button" onClick={() => setShowSettings(true)} className={iconBtn} aria-label="Settings" title="Settings">
             <Settings className="h-[18px] w-[18px]" />
           </button>
-          <ThemeToggle theme={theme} onChange={setTheme} />
         </div>
       </header>
 
@@ -100,6 +108,8 @@ export default function App() {
               doneSet={doneSets.get(h.id) ?? EMPTY}
               today={today}
               weeks={settings.weeks}
+              gridHidden={Boolean(settings.hiddenGrids[h.id])}
+              onToggleGrid={toggleGrid}
               onToggle={store.toggleCheckin}
               onEdit={openEditor}
             />
@@ -122,7 +132,10 @@ export default function App() {
           settings={settings}
           sync={sync}
           configured={configured}
-          onWeeks={(weeks) => store.updateSettings({ weeks })}
+          theme={theme}
+          onTheme={setTheme}
+          onGridsAll={setAllGrids}
+          onWeeks={(weeks) => updateSettings({ weeks })}
           onConnect={store.connect}
           onDisconnect={store.disconnect}
           onSyncNow={store.syncNow}

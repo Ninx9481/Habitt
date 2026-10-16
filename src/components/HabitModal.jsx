@@ -36,7 +36,7 @@ export default function HabitModal({ habit, onSave, onDelete, onClose }) {
 
         <div>
           <span className="mb-1.5 block text-sm font-medium">Colour</span>
-          <div className="flex flex-wrap gap-2.5" role="radiogroup" aria-label="Colour">
+          <div className="grid grid-cols-6 justify-items-center gap-2.5 sm:grid-cols-9" role="radiogroup" aria-label="Colour">
             {COLOR_KEYS.map((key) => {
               const selected = color === key;
               return (
@@ -49,7 +49,7 @@ export default function HabitModal({ habit, onSave, onDelete, onClose }) {
                   title={COLORS[key].label}
                   onClick={() => setColor(key)}
                   style={colorVars(key)}
-                  className={`flex h-9 w-9 items-center justify-center rounded-full bg-[var(--habit)] text-white transition active:scale-95 dark:bg-[var(--habit-dark)] dark:text-[color:var(--habit-fg-dark)] ${
+                  className={`flex h-9 w-9 items-center justify-center rounded-full bg-[var(--habit)] text-[color:var(--habit-fg)] transition active:scale-95 dark:bg-[var(--habit-dark)] dark:text-[color:var(--habit-fg-dark)] ${
                     selected ? 'ring-2 ring-zinc-900 ring-offset-2 ring-offset-white dark:ring-zinc-100 dark:ring-offset-zinc-800' : ''
                   }`}
                 >
