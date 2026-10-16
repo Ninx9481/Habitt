@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Class-based dark mode: <html class="dark"> is toggled by useTheme (system / light / dark) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+/* Micro-animations */
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+@keyframes check-pop {
+  0%   { transform: scale(0.3); opacity: 0; }
+  60%  { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.animate-pop   { animation: pop 0.4s ease-out; }
+.animate-check { animation: check-pop 0.35s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pop,
+  .animate-check { animation: none; }
+  * { transition-duration: 0.01ms !important; }
+}
